@@ -6,3 +6,4 @@
 data/
 /infra/terraform.tfstate
 /infra/terraform.tfstate.backup
+/load_pipeline/info.json
