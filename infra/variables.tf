@@ -10,8 +10,8 @@ variable "zone" {
   default = "europe-west4-a"
 }
 
-variable "dataset" {
-  default = "bike_rental"
+variable "staged_dataset" {
+  default = "bike_rental_staged"
 }
 
 variable "lake_bucket" {

@@ -37,6 +37,12 @@ resource "google_storage_bucket" "data_lake_bucket" {
   force_destroy = true
 }
 
+resource "google_bigquery_dataset" "bike_rental_staged_dataset" {
+  dataset_id = var.dataset_staged
+  project    = var.project
+  location   = var.region
+}
+
 resource "google_bigquery_dataset" "bike_rental_dataset" {
   dataset_id = var.dataset
   project    = var.project

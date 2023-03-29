@@ -1,10 +1,12 @@
 import argparse
+import json
 import os
 import re
 import time
 from datetime import datetime
 from io import StringIO
 from pathlib import Path
+from typing import Tuple
 
 import pandas as pd
 import requests
@@ -28,7 +30,7 @@ def get_urls(date_from: str, date_to: str) -> list:
     driver = webdriver.Chrome(executable_path='/Users/oleg.volchenko/Downloads/chromedriver_mac_arm64/chromedriver')
     driver.get('https://cycling.data.tfl.gov.uk/')
     # wait sometime so page can generate the urls otherwise it can return incomplete list of links
-    time.sleep(10)
+    time.sleep(15)
     # Parse a payload
     soup = BeautifulSoup(driver.page_source, 'html.parser')
     urls = []
@@ -101,15 +103,15 @@ def read_file(url: str) -> pd.DataFrame:
 
 
 @task(name='write result to local', log_prints=True)
-def write_local(df: pd.DataFrame, url) -> Path:
+def write_local(df: pd.DataFrame, url) -> Tuple[Path, int]:
     """Writes DataFrame as parquet file"""
     if not os.path.isdir('data'):
         os.makedirs('data')
-    filename = url.split('/')[-1]
-    path = Path(f"data/{filename.replace('.csv', '.parquet')}")
+    id = re.findall(r'^\d+[a-z]+|^\d+', url.split('/')[-1])[0]
+    path = Path(f"data/{id}.parquet")
     df.to_parquet(path, compression='gzip')
     print(f'loaded {len(df)} rows into a parquet file')
-    return path
+    return path, id
 
 
 @task(name='Write result to gcs')
@@ -119,7 +121,7 @@ def write_gcs(path: Path) -> None:
     gcp_cloud_storage_bucket_block.upload_from_path(from_path=path, to_path=path)
 
 
-@flow(name='Load to data lake')
+@flow(name='Load to data lake', log_prints=True)
 def load_to_datalake(date_from: str, date_to: str) -> None:
     """
     Loads source data for requested period into data lake
@@ -129,11 +131,23 @@ def load_to_datalake(date_from: str, date_to: str) -> None:
     """
 
     urls = get_urls(date_from, date_to)
-
+    # create schema object that contains date period and information about columns and dtypes
+    schema = {}
     for url in urls:
         df = read_file(url)
-        path = write_local(df, url)
+        df = df.rename(str.lower, axis='columns')
+        df['start date'] = pd.to_datetime(df['start date'])
+        path, id = write_local(df, url)
+        print(id, df.columns)
+        types = df.dtypes.to_frame('dtypes').reset_index()
+        schema[id] = {'date_from': min(df['start date']).strftime('%Y-%m-%d'),
+                      'date_to': max(df['start date']).strftime('%Y-%m-%d'),
+                      'dtypes': types.set_index('index')['dtypes'].astype(str).to_dict()}
         write_gcs(path)
+    # load schema to gcs
+    with open('data/info.json', 'w') as f:
+        json.dump(schema, f)
+    write_gcs('data/info.json')
 
 
 if __name__ == '__main__':
@@ -146,6 +160,6 @@ if __name__ == '__main__':
 
     # Read arguments from command line
     args = parser.parse_args()
-    load_to_datalake('2022-10-24','2023-10-30')
+    load_to_datalake('2012-01-01','2023-10-30')
     # load_to_datalake(args.date_from, args.date_to)
 
