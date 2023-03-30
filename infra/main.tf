@@ -38,13 +38,13 @@ resource "google_storage_bucket" "data_lake_bucket" {
 }
 
 resource "google_bigquery_dataset" "bike_rental_staged_dataset" {
-  dataset_id = var.dataset_staged
+  dataset_id = var.staged_dataset
   project    = var.project
   location   = var.region
 }
 
 resource "google_bigquery_dataset" "bike_rental_dataset" {
-  dataset_id = var.dataset
+  dataset_id = var.bike_rental_dataset
   project    = var.project
   location   = var.region
 }

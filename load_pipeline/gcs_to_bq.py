@@ -76,6 +76,7 @@ def transform(path: Path) -> pd.DataFrame:
     df['startstation_name'] = df['startstation_name'].astype(str)
     df['endstation_id'] = df['endstation_id'].astype(str)
     df['endstation_name'] = df['endstation_name'].astype(str)
+    df.dropna(subset=['start_date', 'end_date','startstation_id', 'endstation_id'], inplace=True)
     return df
 
 
@@ -87,7 +88,7 @@ def load_to_bq(df: pd.DataFrame, id: int) -> None:
     print(f'Ingesting {id} id to bq')
     # ingest to bq, schema is optional but improves robustness
     df.to_gbq(
-        destination_table=f'bike_rental_staged.{id}',
+        destination_table=f'bike_rental_sg.{id}',
         project_id='zoomcamp-olvol3',
         credentials=gcp_cred_block.get_credentials_from_service_account(),
         if_exists='replace',
@@ -118,5 +119,5 @@ if __name__ == '__main__':
 
     # Read arguments from command line
     args = parser.parse_args()
-    load_to_dw(args.date_from, args.date_to)
+    load_to_dw(args.From, args.To)
 

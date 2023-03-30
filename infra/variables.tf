@@ -11,7 +11,10 @@ variable "zone" {
 }
 
 variable "staged_dataset" {
-  default = "bike_rental_staged"
+  default = "bike_rental_stg"
+}
+variable "bike_rental_dataset" {
+  default = "bike_rental"
 }
 
 variable "lake_bucket" {
