@@ -37,14 +37,20 @@ resource "google_storage_bucket" "data_lake_bucket" {
   force_destroy = true
 }
 
-resource "google_bigquery_dataset" "bike_rental_staged_dataset" {
-  dataset_id = var.staged_dataset
+resource "google_bigquery_dataset" "bikes_rental_staged_dataset" {
+  dataset_id = "br_staged"
   project    = var.project
   location   = var.region
 }
 
-resource "google_bigquery_dataset" "bike_rental_dataset" {
-  dataset_id = var.bike_rental_dataset
+resource "google_bigquery_dataset" "bikes_rental_intermediate_dataset" {
+  dataset_id = "br_intermediate"
+  project    = var.project
+  location   = var.region
+}
+
+resource "google_bigquery_dataset" "bikes_rental_mart_dataset" {
+  dataset_id = "br_mart"
   project    = var.project
   location   = var.region
 }

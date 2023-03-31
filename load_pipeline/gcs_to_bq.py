@@ -44,39 +44,30 @@ def extract_from_gcs(id: str) -> Path:
 @task(name='Transform df', log_prints=True)
 def transform(path: Path) -> pd.DataFrame:
     """Fix dtype issues"""
+    print(f'transforming {path}')
     df = pd.read_parquet(path)
     # rename columns
     columns_mapping = {'rental id': 'rental_id',
                        'number': 'rental_id',
                        'end date': 'end_date',
-                       'endstation id': 'endstation_id',
                        'endstation name': 'endstation_name',
                        'start date': 'start_date',
-                       'startstation id': 'startstation_id',
                        'startstation name': 'startstation_name',
-                       'endstation logical terminal': 'endstation_id',
-                       'startstation logical terminal': 'startstation_id',
-                       'start station number': 'startstation_id',
                        'start station': 'startstation_name',
-                       'end station number': 'endstation_id',
                        'end station': 'endstation_name',
-                       'end station id': 'endstation_id',
                        'end station name': 'endstation_name',
-                       'start station id': 'startstation_id',
                        'start station name': 'startstation_name'}
     df = df.rename(columns=columns_mapping)
     # select columns that are needed for modeling
-    df = df[['rental_id', 'start_date', 'end_date', 'startstation_id', 'startstation_name',
-             'endstation_id', 'endstation_name']]
+    df = df[['rental_id', 'start_date', 'end_date', 'startstation_name', 'endstation_name']]
     # since there are multpiple files, makes sure that type is correct
+    df['export_id'] = str(path).split('/')[-1]
     df['rental_id'] = df['rental_id'].astype(int)
     df['start_date'] = pd.to_datetime(df['start_date'])
     df['end_date'] = pd.to_datetime(df['end_date'])
-    df['startstation_id'] = df['startstation_id'].astype(str)
     df['startstation_name'] = df['startstation_name'].astype(str)
-    df['endstation_id'] = df['endstation_id'].astype(str)
     df['endstation_name'] = df['endstation_name'].astype(str)
-    df.dropna(subset=['start_date', 'end_date','startstation_id', 'endstation_id'], inplace=True)
+    df.dropna(subset=['start_date', 'end_date'], inplace=True)
     return df
 
 
@@ -88,11 +79,12 @@ def load_to_bq(df: pd.DataFrame, id: int) -> None:
     print(f'Ingesting {id} id to bq')
     # ingest to bq, schema is optional but improves robustness
     df.to_gbq(
-        destination_table=f'bike_rental_sg.{id}',
+        destination_table=f'br_staged.trips_export',
         project_id='zoomcamp-olvol3',
         credentials=gcp_cred_block.get_credentials_from_service_account(),
-        if_exists='replace',
-        table_schema = [{'name': 'rental_id', 'type': 'INT64'},{'name': 'star_date', 'type': 'DATETIME'},
+        chunksize=500000,
+        if_exists='append',
+        table_schema = [{'name':'export_id','type':'STRING'},{'name': 'rental_id', 'type': 'INT64'},{'name': 'star_date', 'type': 'DATETIME'},
                         {'name': 'end_date', 'type': 'DATETIME'},{'name': 'startstation_id', 'type': 'STRING'},
                         {'name': 'startstation_name', 'type': 'STRING'},{'name': 'endstation_id', 'type': 'STRING'},
                         {'name': 'endstation_name', 'type': 'STRING'}]
@@ -105,9 +97,13 @@ def load_to_dw(date_from: str, date_to: str) -> None:
     """Main etl flow to load data into bq"""
     ids = get_ids(date_from, date_to)
     for id in ids:
-        path = extract_from_gcs(id)
-        df = transform(path)
-        load_to_bq(df, id)
+        try:
+            path = extract_from_gcs(id)
+            df = transform(path)
+            load_to_bq(df, id)
+        except Exception as e:
+            print(f'{id} failed ingestion reason {e}')
+            continue
 
 
 if __name__ == '__main__':
