@@ -32,7 +32,7 @@ clean-targets:         # directories to be removed by `dbt clean`
 # as tables. These settings can be overridden in the individual model files
 # using the `{{ config(...) }}` macro.
 models:
-  london_bikes_rental:
+  bike_rentals:
     # Applies to all files under models/example/
     intermediate:
       materialized: view
