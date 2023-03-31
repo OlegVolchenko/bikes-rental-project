@@ -2,7 +2,7 @@
 version: 2
 
 models:
-    - name: bikes-rental
+    - name: bikes_rental
       description: "Bikes rentals model "
       columns:
           - name: rental_id
