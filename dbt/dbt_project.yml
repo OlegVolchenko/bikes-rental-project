@@ -34,5 +34,5 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   london_bikes_rental:
     # Applies to all files under models/example/
-    rentals:
+    intermediate:
       materialized: view
