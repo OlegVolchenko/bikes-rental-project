@@ -1,0 +1,25 @@
+
+version: 2
+
+models:
+    - name: bikes-rental
+      description: "Bikes rentals model "
+      columns:
+          - name: rental_id
+            description: "The primary key for this table"
+            tests:
+                - unique
+                - not_null
+
+
+
+sources:
+    - name: staging
+      #For bigquery:
+      database: zoomcamp-olvol3
+      schema: br_staging
+
+      # loaded_at_field: record_loaded_at
+      tables:
+        - name: br_trips
+
