@@ -17,7 +17,7 @@ sources:
     - name: staging
       #For bigquery:
       database: zoomcamp-olvol3
-      schema: br_staging
+      schema: br_staged
 
       # loaded_at_field: record_loaded_at
       tables:
