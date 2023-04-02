@@ -4,6 +4,3 @@ seeds:
   - name: locations
     description: >
       Mapping of addresses to a London borough
-  - name: station_borough_mapping
-    description: >
-      Mapping of addresses to a London borough
