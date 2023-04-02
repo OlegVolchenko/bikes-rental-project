@@ -38,5 +38,5 @@ models:
       materialized: view
 seeds:
   bike_rentals:
-    locations:
+    station_borough_mapping:
       +enabled: True
