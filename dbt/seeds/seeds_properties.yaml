@@ -1,6 +1,6 @@
 version: 2
 
 seeds:
-  - name: locations
+  - name: station_borough_mapping
     description: >
       Mapping of addresses to a London borough
