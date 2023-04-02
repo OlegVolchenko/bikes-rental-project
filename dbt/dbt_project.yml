@@ -36,3 +36,13 @@ models:
     # Applies to all files under models/example/
     intermediate:
       materialized: view
+seeds:
+  bike_rentals:
+    station_borough_mapping:
+      +column_types:
+        station_name: string
+        borough: string
+    locations:
+      +column_types:
+        Location: string
+        Borough: string
