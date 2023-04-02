@@ -39,10 +39,6 @@ models:
 seeds:
   bike_rentals:
     station_borough_mapping:
-      +column_types:
-        station_name: string
-        borough: string
+      +enabled: True
     locations:
-      +column_types:
-        Location: string
-        Borough: string
+      +enabled: True
