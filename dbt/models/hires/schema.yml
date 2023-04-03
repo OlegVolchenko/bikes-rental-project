@@ -2,14 +2,24 @@
 version: 2
 
 models:
-    - name: bikes_rental_fact
-      description: "Bikes rentals model "
+    - name: bh_fact
+      description: "Bikes hires model "
       columns:
           - name: rental_id
             description: "The primary key for this table"
             tests:
                 - unique
                 - not_null
+
+    - name: bh_with_boroughs
+      description: "Bikes hires model with boroughs dimension"
+      columns:
+        - name: rental_id
+          description: "The primary key for this table"
+          tests:
+            - unique
+            - not_null
+
 
 
 
