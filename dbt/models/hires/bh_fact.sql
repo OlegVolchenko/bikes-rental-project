@@ -7,4 +7,4 @@ SELECT
   DATETIME_DIFF(end_date, start_date, MINUTE) AS duration,
   startstation_name,
   endstation_name
-FROM {{ source('staging','br_trips') }}
+FROM {{ source('staging','trips_export') }}
