@@ -40,3 +40,7 @@ seeds:
   hires:
     dim_boroughs:
       +enabled: True
+    dim_geo:
+      +enabled: True
+    dim_population:
+      +enabled: True
