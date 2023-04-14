@@ -3,7 +3,8 @@
 .terraform/
 .terraform.*
 .DS_Store
-data/
 /infra/terraform.tfstate
 /infra/terraform.tfstate.backup
 /load_pipeline/info.json
+/extract_pipeline/data
+/load_pipeline/data/
