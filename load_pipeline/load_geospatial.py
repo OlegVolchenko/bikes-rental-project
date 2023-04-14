@@ -1,12 +1,6 @@
-import argparse
-import json
-from datetime import datetime
-from pathlib import Path
-from typing import List
-
 import pandas as pd
-from prefect import flow, task
-from prefect_gcp import GcpCredentials, GcsBucket
+from prefect import flow
+from prefect_gcp import GcpCredentials
 
 
 @flow(name='Load geospatial to bq', log_prints=True)
@@ -26,13 +20,5 @@ def load_to_bq() -> None:
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-
-    # Adding optional argument
-    parser.add_argument("-f", "--From", help="Date of extract start in %Y-%m-%d format")
-    parser.add_argument("-t", "--To", help="Date of extract start in %Y-%m-%d format")
-
-    # Read arguments from command line
-    args = parser.parse_args()
     load_to_bq()
 
