@@ -1,27 +1,6 @@
 
 version: 2
 
-models:
-    - name: bh_fact
-      description: "Bikes hires model "
-      columns:
-          - name: rental_id
-            description: "The primary key for this table"
-            tests:
-                - unique
-                - not_null
-
-    - name: bh_core_agg
-      description: "Aggregated tables with measures"
-      columns:
-        - name: year
-          description: "aggregated year of measure"
-          tests:
-            - not_null
-
-
-
-
 sources:
     - name: staging
       #For bigquery:
@@ -32,4 +11,78 @@ sources:
       tables:
         - name: trips_export
         - name: dim_geospatial
+
+models:
+    - name: bh_fact
+      description: "Fact hires table that has information per bike rental, added boroughs. Partitioned by start date
+      and clustered by borough"
+      columns:
+          - name: rental_id
+            description: "The primary key for this table"
+            tests:
+                - unique
+                - not_null
+          - name: start_date
+            description: "start DATETIME of bike rental"
+            tests:
+              - not_null
+          - name: end_date
+            description: "end DATETIME of bike rental"
+            tests:
+              - not_null
+          - name: duration
+            description: "bike hire duration in minutes"
+            tests:
+              - not_null
+          - name: end_date
+            description: "end DATETIME of bike rental"
+            tests:
+              - not_null
+          - name: startstation_name
+            description: "name of a station where hire started"
+            tests:
+              - not_null
+          - name: endstation_name
+            description: "name of a station where hire ended"
+            tests:
+              - not_null
+          - name: startstation_borough
+            description: "name of a borough where hire started"
+            tests:
+              - not_null
+          - name: endstation_borough
+            description: "name of a borough where hire ended"
+            tests:
+              - not_null
+
+    - name: bh_core_agg
+      description: "Aggregated tables with measures"
+      columns:
+        - name: year
+          description: "aggregated year of measure"
+          tests:
+            - not_null
+        - name: borough
+          description: "A borrough of hire"
+          tests:
+            - not_null
+        - name: avg_duration
+          description: "Average duration of hire"
+          tests:
+            - not_null
+        - name: hires
+          description: "Number of hires per aggregation"
+          tests:
+            - not_null
+        - name: geometry
+          description: "Geometry object that represent borough, can be polygon or multipolygon"
+          tests:
+            - not_null
+        - name: population
+          description: "Borough population"
+          tests:
+            - not_null
+
+
+
 

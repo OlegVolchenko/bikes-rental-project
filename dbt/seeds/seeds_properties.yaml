@@ -3,7 +3,7 @@ version: 2
 seeds:
   - name: dim_boroughs
     description: >
-      Mapping of addresses to a London borough
+      Mapping of addresses to London boroughs
   - name: dim_population
     description: >
       London boroughs population data
