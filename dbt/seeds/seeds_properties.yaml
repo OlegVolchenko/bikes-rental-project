@@ -4,9 +4,6 @@ seeds:
   - name: dim_boroughs
     description: >
       Mapping of addresses to a London borough
-  - name: dim_geo
-    description: >
-      London boroughs geospatial data
   - name: dim_population
     description: >
       London boroughs population data

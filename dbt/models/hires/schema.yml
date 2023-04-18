@@ -11,13 +11,12 @@ models:
                 - unique
                 - not_null
 
-    - name: bh_with_boroughs
-      description: "Bikes hires model with boroughs dimension"
+    - name: bh_core_agg
+      description: "Aggregated tables with measures"
       columns:
-        - name: rental_id
-          description: "The primary key for this table"
+        - name: year
+          description: "aggregated year of measure"
           tests:
-            - unique
             - not_null
 
 
@@ -32,4 +31,5 @@ sources:
       # loaded_at_field: record_loaded_at
       tables:
         - name: trips_export
+        - name: dim_geospatial
 

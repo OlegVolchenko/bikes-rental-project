@@ -1,4 +1,12 @@
-{{ config(materialized='view') }}
+{{ config(
+    materialized='table',
+    partition_by={
+      "field": "start_date",
+      "data_type": "datetime",
+      "granularity": "day"
+    }
+    cluster_by = "startstation_borough"
+)}}
 
 with hires AS (
 SELECT
@@ -11,10 +19,14 @@ FROM {{ source('staging','trips_export') }}
 
 )
 SELECT
-  rental_id,
-  start_date,
-  end_date,
-  DATETIME_DIFF(end_date, start_date, MINUTE) AS duration,
-  startstation_name,
-  endstation_name
+  hires.rental_id,
+  hires.start_date,
+  hires.end_date,
+  DATETIME_DIFF(hires.end_date, hires.start_date, MINUTE) AS duration,
+  hires.startstation_name,
+  hires.endstation_name,
+  start_boroughs.borough AS startstation_borough,
+  start_boroughs.borough AS endstation_borough
 FROM hires
+LEFT JOIN {{ ref('dim_boroughs') }} AS start_boroughs ON REPLACE(hires.startstation_name,',','') = start_boroughs.station_name
+LEFT JOIN {{ ref('dim_boroughs') }} AS end_boroughs ON REPLACE(hires.startstation_name,',','')  = end_boroughs.station_name

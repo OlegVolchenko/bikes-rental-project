@@ -14,7 +14,8 @@ def load_to_bq() -> None:
         project_id='zoomcamp-olvol3',
         credentials=gcp_cred_block.get_credentials_from_service_account(),
         chunksize=500000,
-        if_exists='replace'
+        if_exists='replace',
+        table_schema=[{'name': 'District', 'type': 'STRING'}, {'name': 'Geometry', 'type': 'STRING'}]
     )
     print('DataFrame has been ingested to bq table ')
 
