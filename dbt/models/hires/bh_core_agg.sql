@@ -13,8 +13,7 @@ SELECT
     fact.borough,
     fact.avg_duration,
     fact.hires,
-    geo.Geometry,
-    pop.Population,
+    geo.geometry,
+    geo.population,
 FROM fact
-LEFT JOIN {{ ref('stg_dim_geo') }} AS geo ON fact.borough = geo.District
-LEFT JOIN {{ ref('dim_population') }} AS pop ON fact.borough = pop.Borough
+LEFT JOIN {{ ref('stg_dim_geo') }} AS geo USING(borough)
