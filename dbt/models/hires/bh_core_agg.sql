@@ -9,10 +9,10 @@ SELECT
 FROM {{ ref('bh_fact') }}
 GROUP BY 1,2 )
 SELECT
-    year,
-    borough,
-    avg_duration,
-    hires,
+    fact.year,
+    fact.borough,
+    fact.avg_duration,
+    fact.hires,
     geo.Geometry,
     pop.Population,
 FROM fact
