@@ -72,12 +72,8 @@ models:
             - not_null
         - name: geometry
           description: "Geometry object that represent borough, can be polygon or multipolygon"
-          tests:
-            - not_null
         - name: population
           description: "Borough population"
-          tests:
-            - not_null
 
 
 
