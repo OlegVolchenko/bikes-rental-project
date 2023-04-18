@@ -3,7 +3,7 @@
 WITH fact AS (
 SELECT
     EXTRACT(YEAR FROM start_date) AS year,
-    startstation_borough AS borough
+    startstation_borough AS borough,
     AVG(duration) AS avg_duration,
     COUNT(DISTINCT rental_id) AS hires
 FROM {{ ref('bh_fact') }}
