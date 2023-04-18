@@ -34,10 +34,6 @@ models:
             description: "bike hire duration in minutes"
             tests:
               - not_null
-          - name: end_date
-            description: "end DATETIME of bike rental"
-            tests:
-              - not_null
           - name: startstation_name
             description: "name of a station where hire started"
             tests:
