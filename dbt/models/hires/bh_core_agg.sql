@@ -1,4 +1,6 @@
-WITH FACT AS (
+{{ config(materialized='table') }}
+
+WITH fact AS (
 SELECT
     EXTRACT(YEAR FROM start_date) AS year,
     startstation_borough AS borough

@@ -1,4 +1,4 @@
 SELECT
     District,
     ST_GEOGFROMTEXT(Geometry) AS Geometry
-FROM {{ ref('dim_geospatial') }}
+FROM {{ source('staging','trips_export') }}
