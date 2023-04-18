@@ -4,7 +4,7 @@
       "field": "start_date",
       "data_type": "datetime",
       "granularity": "day"
-    }
+    },
     cluster_by = "startstation_borough"
 )}}
 
