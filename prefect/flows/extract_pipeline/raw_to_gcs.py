@@ -26,8 +26,7 @@ def get_urls(date_from: str, date_to: str) -> list:
     :return: None
     """
     # The page generates urls using javascript so in order to get them after generation we need to use webdriver
-    # TODO: fix this path for Docker
-    driver = webdriver.Chrome(executable_path='/Users/oleg.volchenko/Downloads/chromedriver_mac_arm64/chromedriver')
+    driver = webdriver.Chrome(executable_path=os.environ['DRIVER_PATH'])
     driver.get('https://cycling.data.tfl.gov.uk/')
     # wait sometime so page can generate the urls otherwise it can return incomplete list of links
     time.sleep(15)
