@@ -1,5 +1,6 @@
 variable "project" {
-  default = "zoomcamp-olvol3"
+  default     = "de-hires-project"
+  description = "GCP project name"
   }
 
 variable "region" {
@@ -16,5 +17,5 @@ variable "lake_bucket" {
 
 variable "storage_class" {
   description = "Storage class type for your bucket. Check official docs for more info."
-  default = "STANDARD"
+  default     = "STANDARD"
 }
