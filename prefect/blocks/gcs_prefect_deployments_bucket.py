@@ -1,5 +1,6 @@
-from prefect.filesystems import GCS
 import os
+
+from prefect.filesystems import GCS
 
 with open(os.environ['PREFECT_SA']) as f:
     service_account = f.read()
@@ -10,5 +11,4 @@ block = GCS(
     service_account_info=service_account,
     project="project"
 )
-
 block.save("dev")

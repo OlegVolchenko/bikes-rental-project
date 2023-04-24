@@ -61,7 +61,7 @@ export PREFECT_SA=/Users/oleg.volchenko/Documents/secret/service_account.json
 ```
 navigate to project root and create dev block
 ```shell
-python prefect/blocks/dev.py
+python prefect/blocks/gcs_prefect_deployments_bucket.py
 ```
 #### Load data into a data lake 
 
