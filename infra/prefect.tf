@@ -1,4 +1,4 @@
-
+### PREFECT BUCKETS
 resource "google_storage_bucket" "prefect_deployments" {
   project = var.project
   name          = "prefect_deployments_${var.project}"
@@ -42,6 +42,8 @@ resource "google_bigquery_dataset" "bikes_rental_staged_dataset" {
   location   = var.region
 }
 
+
+### PREFECT SA
 resource "google_service_account" "sa" {
   project      = var.project
   account_id   = "prefect"
@@ -64,4 +66,37 @@ resource "google_project_iam_member" "iam_sa" {
   project = var.project
   role    = "roles/iam.serviceAccountUser"
   member  = "serviceAccount:${google_service_account.sa.email}"
+}
+### ENABLE COMPUTE API
+
+resource "google_project_service" "project" {
+  project = var.project
+  service = "compute.googleapis.com"
+}
+
+### PREFECT AGENT
+
+resource "google_compute_instance" "default" {
+  name         = "prefect-agent"
+  machine_type = "e2-micro"
+  zone         = var.zone
+
+
+  boot_disk {
+    initialize_params {
+      image = "ubuntu-2004-focal-v20230104"
+    }
+  }
+
+  network_interface {
+    network = "default"
+    access_config {}
+  }
+
+  service_account {
+    # Google recommends custom service accounts that have cloud-platform scope and permissions granted via IAM Roles.
+    email  = google_service_account.sa.email
+    scopes = ["cloud-platform"]
+  }
+ depends_on = [google_project_service.project]
 }
