@@ -44,6 +44,22 @@ Loging to Prefect account
 prefect cloud login
 ```
 
+Generate an API key in prefect cloud and save it somewhere
+
+Create a key in secret manager for Prefect api
+
+```shell
+gcloud secrets create prefect-key \
+    --replication-policy="automatic"
+```
+
+Add the key version to Secret Manager
+
+```shell
+echo -n "<prefect cloud key>" | \   
+    gcloud secrets versions add prefect-key --data-file=- 
+```
+
 export project name as variable
 
 ```shell
