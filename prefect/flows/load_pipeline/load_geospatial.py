@@ -6,7 +6,7 @@ from prefect_gcp import GcpCredentials
 @flow(name='Load geospatial to bq', log_prints=True)
 def load_to_bq() -> None:
     """Load DataFrame to bq"""
-    df = pd.read_csv('../static_data/dim_geo.csv')
+    df = pd.read_csv('../../../static_data/dim_geo.csv')
     gcp_cred_block = GcpCredentials.load('bootcamp-gcp-account')
     # ingest to bq, schema is optional but improves robustness
     df.to_gbq(
