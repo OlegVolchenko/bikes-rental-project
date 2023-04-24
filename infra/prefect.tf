@@ -67,16 +67,21 @@ resource "google_project_iam_member" "iam_sa" {
   role    = "roles/iam.serviceAccountUser"
   member  = "serviceAccount:${google_service_account.sa.email}"
 }
-### ENABLE COMPUTE API
+### ENABLE APIs
 
-resource "google_project_service" "project" {
+resource "google_project_service" "compute_api" {
   project = var.project
   service = "compute.googleapis.com"
 }
 
+resource "google_project_service" "secret_api" {
+  project = var.project
+  service = "secretmanager.googleapis.com"
+}
+
 ### PREFECT AGENT
 
-resource "google_compute_instance" "default" {
+resource "google_compute_instance" "agent" {
   name         = "prefect-agent"
   machine_type = "e2-micro"
   zone         = var.zone
@@ -98,5 +103,5 @@ resource "google_compute_instance" "default" {
     email  = google_service_account.sa.email
     scopes = ["cloud-platform"]
   }
- depends_on = [google_project_service.project]
+ depends_on = [google_project_service.compute_api]
 }
