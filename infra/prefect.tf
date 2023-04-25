@@ -99,6 +99,9 @@ resource "google_compute_instance" "agent" {
     }
   }
 
+  metadata_startup_script=file("${path.module}/install.sh")
+
+
   network_interface {
     network = "default"
     access_config {}
