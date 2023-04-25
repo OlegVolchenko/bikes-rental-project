@@ -1,14 +1,12 @@
 import os
 
-from prefect.filesystems import GCS
+from prefect_gcp import GcpCredentials, GcsBucket
 
-with open(os.environ['PREFECT_SA']) as f:
-    service_account = f.read()
+gcp_credentials = GcpCredentials.load("default-credentials")
 
 project = os.environ['PROJECT']
-block = GCS(
-    bucket_path=f"prefect-deployments_{project}/dev/",
-    service_account_info=service_account,
-    project=project
+gcs_bucket = GcsBucket(
+    bucket=f"prefect-deployments_{project}",
+    gcp_credentials=gcp_credentials,
 )
-block.save("dev", overwrite=True)
+gcs_bucket.save("prefect-deployments", overwrite=True)
