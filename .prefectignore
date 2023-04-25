@@ -1,0 +1,14 @@
+.idea
+# terraform
+.terraform/
+.terraform.*
+.DS_Store
+/infra/terraform.tfstate
+/infra/terraform.tfstate.backup
+/workflows/flows/load_pipeline/info.json
+/workflows/flows/load_pipeline/data
+/prefect/flows/load_pipeline/data/data
+service_account.json
+.parquet
+/workflows/flows/extract_pipeline/data/
+
