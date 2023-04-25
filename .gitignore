@@ -5,7 +5,9 @@
 .DS_Store
 /infra/terraform.tfstate
 /infra/terraform.tfstate.backup
-/prefect/flows/load_pipeline/info.json
-/prefect/flows/extract_pipeline/data
-/prefect/flows/load_pipeline/data/
+/workflows/flows/load_pipeline/info.json
+/workflows/flows/load_pipeline/data
+/prefect/flows/load_pipeline/data/data
 service_account.json
+.parquet
+/workflows/flows/extract_pipeline/data/
