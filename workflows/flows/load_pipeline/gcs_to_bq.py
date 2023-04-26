@@ -1,5 +1,6 @@
 import argparse
 import json
+import os
 from datetime import datetime
 from pathlib import Path
 from typing import List
@@ -10,10 +11,9 @@ from prefect_gcp import GcpCredentials, GcsBucket
 
 
 def cloud_storage_flow():
-
-    gcp_credentials = GcpCredentials.load('bootcamp-gcp-account')
+    gcp_credentials = GcpCredentials.load('default-credentials')
     gcs_bucket = GcsBucket(
-        bucket="bike_rental_extract_zoomcamp-olvol3",
+        bucket=f"bike_rental_extract_{os.environ['PROJECT']}",
         gcp_credentials=gcp_credentials
     )
 
@@ -21,6 +21,8 @@ def cloud_storage_flow():
         Path('data/info.json'), 'info.json'
     )
     return downloaded_file_path.read_text()
+
+
 def get_ids(date_from: str, date_to: str) -> List:
     """
 
@@ -32,6 +34,8 @@ def get_ids(date_from: str, date_to: str) -> List:
     info = json.loads(info)
     ids = [key for key in info.keys() if (datetime.strptime(date_from, "%Y-%m-%d").date() <= datetime.strptime(info[key]['date_from'], "%Y-%m-%d").date() and (datetime.strptime(date_to, "%Y-%m-%d").date() >= datetime.strptime(info[key]['date_from'], "%Y-%m-%d").date()))]
     return ids
+
+
 @task(name='Extract from gcs', retries=3)
 def extract_from_gcs(id: str) -> Path:
     """Download data from gcs"""
@@ -80,19 +84,20 @@ def load_to_bq(df: pd.DataFrame, id: int) -> None:
     # ingest to bq, schema is optional but improves robustness
     df.to_gbq(
         destination_table=f'br_staged.trips_export',
-        project_id='zoomcamp-olvol3',
+        project_id=os.environ['PROJECT'],
         credentials=gcp_cred_block.get_credentials_from_service_account(),
         chunksize=500000,
         if_exists='append',
-        table_schema = [{'name':'export_id','type':'STRING'},{'name': 'rental_id', 'type': 'INT64'},{'name': 'star_date', 'type': 'DATETIME'},
-                        {'name': 'end_date', 'type': 'DATETIME'},{'name': 'startstation_id', 'type': 'STRING'},
-                        {'name': 'startstation_name', 'type': 'STRING'},{'name': 'endstation_id', 'type': 'STRING'},
-                        {'name': 'endstation_name', 'type': 'STRING'}]
+        table_schema=[{'name': 'export_id', 'type': 'STRING'}, {'name': 'rental_id', 'type': 'INT64'},
+                      {'name': 'star_date', 'type': 'DATETIME'},
+                      {'name': 'end_date', 'type': 'DATETIME'}, {'name': 'startstation_id', 'type': 'STRING'},
+                      {'name': 'startstation_name', 'type': 'STRING'}, {'name': 'endstation_id', 'type': 'STRING'},
+                      {'name': 'endstation_name', 'type': 'STRING'}]
     )
     print('DataFrame has been ingested to bq table ')
 
 
-@flow(name='Ingest data to bg', log_prints=True)
+@flow(name='ingest_data_to_bg', log_prints=True)
 def load_to_dw(date_from: str, date_to: str) -> None:
     """Main etl flow to load data into bq"""
     ids = get_ids(date_from, date_to)
