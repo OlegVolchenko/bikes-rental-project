@@ -1,5 +1,7 @@
 /dbt/
 /infra/
+/.idea/
+/.git/
 .gitignore
 env.sh
 *.png
