@@ -16,4 +16,4 @@ export PATH
 pip3 install -r requirements.txt
 PREFECT_KEY=$(gcloud secrets versions access 1 --secret="prefect-key")
 prefect cloud login -k $PREFECT_KEY
-tmux new-session -d -s my_session 'prefect agent start -q main'
+tmux new-session -d -s my_session "PROJECT=$(gcloud config list --format 'value(core.project)') && prefect agent start -q main"
