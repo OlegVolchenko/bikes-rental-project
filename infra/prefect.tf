@@ -65,7 +65,7 @@ resource "google_project_iam_member" "iam_secret" {
 
 resource "google_project_iam_member" "iam_bq" {
   project = var.project
-  role    = "roles/bigquery.dataEditor"
+  role    = "roles/bigquery.admin"
   member  = "serviceAccount:${google_service_account.sa.email}"
 }
 ### ENABLE APIs
