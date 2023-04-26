@@ -152,6 +152,4 @@ if __name__ == '__main__':
 
     # Read arguments from command line
     args = parser.parse_args()
-    load_to_datalake('2023-01-01', '2023-02-01')
-    # load_to_datalake(args.date_from, args.date_to)
-
+    load_to_datalake(args.date_from, args.date_to)
