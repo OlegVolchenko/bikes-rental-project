@@ -1,15 +1,4 @@
 ### PREFECT BUCKETS
-resource "google_storage_bucket" "prefect_deployments" {
-  project = var.project
-  name          = "prefect_deployments_${var.project}"
-  location      = var.region
-
-  # Optional, but recommended settings:
-  storage_class = var.storage_class
-  uniform_bucket_level_access = true
-
-  force_destroy = true
-}
 
 resource "google_storage_bucket" "data_lake_bucket" {
   project       = var.project
@@ -98,8 +87,6 @@ resource "google_compute_instance" "agent" {
       image = "ubuntu-2004-focal-v20230104"
     }
   }
-
-  metadata_startup_script=file("${path.module}/install.sh")
 
 
   network_interface {
