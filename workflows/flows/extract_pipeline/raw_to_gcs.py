@@ -26,7 +26,7 @@ def get_urls(date_from: str, date_to: str) -> list:
     :return: None
     """
     # The page generates urls using javascript so in order to get them after generation we need to use webdriver
-    driver = webdriver.Chrome(executable_path=os.environ['DRIVER_PATH'])
+    driver = webdriver.Chrome(executable_path='/driver/chromedriver')
     driver.get('https://cycling.data.tfl.gov.uk/')
     # wait sometime so page can generate the urls otherwise it can return incomplete list of links
     time.sleep(15)
@@ -159,6 +159,6 @@ if __name__ == '__main__':
 
     # Read arguments from command line
     args = parser.parse_args()
-    load_to_datalake('2012-01-01','2023-10-30')
+    load_to_datalake('2023-01-01', '2023-02-01')
     # load_to_datalake(args.date_from, args.date_to)
 
