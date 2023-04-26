@@ -2,7 +2,6 @@ import argparse
 import json
 import os
 import re
-import time
 from datetime import datetime
 from io import StringIO
 from pathlib import Path
@@ -10,10 +9,8 @@ from typing import Tuple
 
 import pandas as pd
 import requests
-from bs4 import BeautifulSoup
 from prefect import flow, task
 from prefect_gcp.cloud_storage import GcsBucket
-from selenium import webdriver
 
 
 @task(name='Get urls')
@@ -26,20 +23,16 @@ def get_urls(date_from: str, date_to: str) -> list:
     :return: None
     """
     # The page generates urls using javascript so in order to get them after generation we need to use webdriver
-    driver = webdriver.Chrome(executable_path='/driver/chromedriver')
-    driver.get('https://cycling.data.tfl.gov.uk/')
-    # wait sometime so page can generate the urls otherwise it can return incomplete list of links
-    time.sleep(15)
-    # Parse a payload
-    soup = BeautifulSoup(driver.page_source, 'html.parser')
-    urls = []
-    for url in soup.find_all('a'):
-        if re.search(r'usage-stats/.+.csv', url.get('href')):
-            url = process_url(url.get('href'), date_from, date_to)
+    with open('workflows/flows/extract_pipeline/load_urls.txt') as f:
+        urls = [url.rstrip('\n') for url in f]
+    selected_urls = []
+    for url in urls:
+        if re.search(r'usage-stats/.+.csv', url):
+            url = process_url(url, date_from, date_to)
             # if url is valid append it to urls list
             if url:
-                urls.append(url)
-    return urls
+                selected_urls.append(url)
+    return selected_urls
 
 
 def process_url(url: str, date_from: str, date_to: str) -> str:
