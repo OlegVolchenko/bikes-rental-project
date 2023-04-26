@@ -79,7 +79,7 @@ def transform(path: Path) -> pd.DataFrame:
 def load_to_bq(df: pd.DataFrame, id: int) -> None:
     """Load DataFrame to bq"""
 
-    gcp_cred_block = GcpCredentials.load('bootcamp-gcp-account')
+    gcp_cred_block = GcpCredentials.load('default-credentials')
     print(f'Ingesting {id} id to bq')
     # ingest to bq, schema is optional but improves robustness
     df.to_gbq(
