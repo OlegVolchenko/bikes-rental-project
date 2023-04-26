@@ -1,6 +1,4 @@
 #!/bin/bash
-git clone https://github.com/OlegVolchenko/bikes-rental-project.git
-cd bikes-rental-project
 sudo apt-get update -y
 sudo apt-get upgrade -y
 sudo apt-get install -y \
@@ -18,3 +16,4 @@ export PATH
 pip3 install -r requirements.txt
 PREFECT_KEY=$(gcloud secrets versions access 1 --secret="prefect-key")
 prefect cloud login -k $PREFECT_KEY
+tmux new-session -d -s my_session 'prefect agent start -q main'

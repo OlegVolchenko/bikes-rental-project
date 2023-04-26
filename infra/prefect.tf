@@ -89,7 +89,7 @@ resource "google_project_service" "secret_api" {
 
 resource "google_compute_instance" "agent" {
   name         = "prefect-agent"
-  machine_type = "e2-micro"
+  machine_type = "e2-standard-2"
   zone         = var.zone
 
 

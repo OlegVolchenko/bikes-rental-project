@@ -98,6 +98,9 @@ create storage block
 python prefect/blocks/gcs_prefect_deployments_storage.py
 ```
 
+git clone https://github.com/OlegVolchenko/bikes-rental-project.git
+cd bikes-rental-project
+
 #### Load data into a data lake
 
 This pipeline is orchestrated by Prefect. It loads data from bike rental data source and loads transformed parquet
