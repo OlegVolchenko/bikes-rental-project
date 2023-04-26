@@ -62,6 +62,12 @@ resource "google_project_iam_member" "iam_secret" {
   role    = "roles/secretmanager.secretAccessor"
   member  = "serviceAccount:${google_service_account.sa.email}"
 }
+
+resource "google_project_iam_member" "iam_bq" {
+  project = var.project
+  role    = "roles/bigquery.dataEditor"
+  member  = "serviceAccount:${google_service_account.sa.email}"
+}
 ### ENABLE APIs
 
 resource "google_project_service" "compute_api" {
