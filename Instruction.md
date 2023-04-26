@@ -100,6 +100,8 @@ python prefect/blocks/gcs_prefect_deployments_storage.py
 
 git clone https://github.com/OlegVolchenko/bikes-rental-project.git
 cd bikes-rental-project
+sudo chmod +x install.sh
+./install.sh
 
 #### Load data into a data lake
 
