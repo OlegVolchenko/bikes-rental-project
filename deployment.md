@@ -26,13 +26,13 @@ pip install -r requirements.txt
 
 ### Terraform 
 
-This project infrastructure is managed by terraform. In order to deploy infrastructure run:
+This project infrastructure is managed by terraform. Update `infra/variables.tf` with details of your project and run:
 
 ```shell
 terraform apply
 ```
 
-### Running pipelines
+### Prefect deployment
 
 This block explains the project pipeline and how to run and deploy them
 
@@ -88,7 +88,7 @@ bash workflows/prefect_deployment.sh
 
 Deploy Prefect agent
 
-ssh to prefect-agent vm and run following commands
+ssh to `prefect-agent` vm and run following commands
 
 ```shell
 git clone https://github.com/OlegVolchenko/bikes-rental-project.git
@@ -99,7 +99,10 @@ sudo chmod +x install.sh
 
 Now all the deployed workflows can be triggered from prefect cloud ui
 
-#### Load data into a data lake
+### DBT
 
-This pipeline is orchestrated by Prefect. It loads data from bike rental data source and loads transformed parquet
-files into a data lake. Parquet allows significantly decrease size of objects. 
+DBT cloud account must be created in order to run the project. Follow
+instructions [here](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/week_4_analytics_engineering/dbt_cloud_setup.md)
+create a project and connect a sa and github repo (make a fork if you are planning to commit any changes)
+
+run `dbt run` and check results dataset
