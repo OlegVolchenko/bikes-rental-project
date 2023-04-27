@@ -80,28 +80,24 @@ export variable with a path to the sa key
 export PREFECT_SA="<PREFECT_SA>"
 ```
 
-navigate to project root and create deployments
+Deploy prefect blocks and flows
 
 ```shell
-python prefect/blocks/gcs_prefect_deployments_bucket.py
+bash workflows/prefect_deployment.sh
 ```
 
-create credentials block
+Deploy Prefect agent
+
+ssh to prefect-agent vm and run following commands
 
 ```shell
-python prefect/blocks/gcp_prefect_deployments_credentials.py
-```
-
-create storage block
-
-```shell
-python prefect/blocks/gcs_prefect_deployments_storage.py
-```
-
 git clone https://github.com/OlegVolchenko/bikes-rental-project.git
 cd bikes-rental-project
 sudo chmod +x install.sh
 ./install.sh
+```
+
+Now all the deployed workflows can be triggered from prefect cloud ui
 
 #### Load data into a data lake
 
