@@ -53,6 +53,10 @@ gcloud secrets create prefect-key \
     --replication-policy="automatic"
 ```
 
+```shell
+gcloud secrets create prefect-workspace \
+    --replication-policy="automatic"
+```
 Add the key version to Secret Manager
 
 ```shell
@@ -60,6 +64,10 @@ echo -n "<prefect cloud key>" | \
     gcloud secrets versions add prefect-key --data-file=- 
 ```
 
+```shell
+echo -n "<prefect cloud workspace>" | \   
+    gcloud secrets versions add prefect-workspace --data-file=- 
+```
 export project name as variable
 
 ```shell

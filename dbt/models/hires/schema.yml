@@ -4,7 +4,7 @@ version: 2
 sources:
     - name: staging
       #For bigquery:
-      database: zoomcamp-olvol3
+      database: de-hires-project
       schema: br_staged
 
       # loaded_at_field: record_loaded_at
