@@ -2,7 +2,9 @@
 python blocks/gcp_prefect_deployments_credentials.py
 python blocks/gcp_prefect_deployments_github.py
 python blocks/gcp_prefect_deployments_storage.py
+python blocks/gcp_prefect_deployment_dbt_profile.py
 #flows
 python deployments/gcs_to_bq_deployment.py
 python deployments/geospatial_deployment.py
 python deployments/raw_to_gcs_deployment.py
+python deployments/dbt_deployment.py
