@@ -1,14 +1,18 @@
+import os
+
 from prefect import flow
 from prefect_dbt.cli import DbtCliProfile, DbtCoreOperation
 
 
 @flow
 def trigger_dbt_flow():
+    dbt_path = f"{os.getcwd()}/dbt"
+
     dbt_cli_profile = DbtCliProfile.load("dev-profile")
     with DbtCoreOperation(
-            commands=["dbt debug", "dbt run"],
-            project_dir="bikes-rental-project",
-            profiles_dir="dbt",
+            commands=["dbt build"],
+            project_dir=dbt_path,
+            profiles_dir=dbt_path,
             dbt_cli_profile=dbt_cli_profile,
             overwrite_profiles=True,
     ) as dbt_operation:
@@ -19,4 +23,5 @@ def trigger_dbt_flow():
     return result
 
 
-trigger_dbt_flow()
+if __name__ == "__main__":
+    trigger_dbt_flow()
