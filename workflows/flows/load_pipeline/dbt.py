@@ -10,6 +10,7 @@ def trigger_dbt_flow():
             project_dir="bikes-rental-project",
             profiles_dir="dbt",
             dbt_cli_profile=dbt_cli_profile,
+            overwrite_profiles=True,
     ) as dbt_operation:
         dbt_process = dbt_operation.trigger()
         # do other things before waiting for completion
