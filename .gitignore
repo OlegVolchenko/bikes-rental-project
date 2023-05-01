@@ -13,3 +13,4 @@ service_account.json
 /workflows/flows/extract_pipeline/data/
 /dbt/profiles.yml
 /profiles.yml
+/.user.yml
