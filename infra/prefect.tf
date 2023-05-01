@@ -94,6 +94,7 @@ resource "google_compute_instance" "agent" {
     }
   }
 
+  metadata_startup_script = file("./startup.sh")
 
   network_interface {
     network = "default"
