@@ -1,0 +1,8 @@
+my-bigquery-db:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: oauth
+      project: de-hires-project
+      dataset: br_intermediate # You can also use "schema" here
