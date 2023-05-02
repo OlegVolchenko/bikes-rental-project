@@ -1,14 +1,14 @@
 variable "project" {
-  default     = "de-hires-project"
+  default     = <project name>
   description = "GCP project name"
   }
 
 variable "region" {
-  default = "europe-west4"
+  default = <region>
 }
 
 variable "zone" {
-  default = "europe-west4-a"
+  default = <zone>
 }
 
 variable "lake_bucket" {

@@ -24,14 +24,6 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Terraform 
-
-This project infrastructure is managed by terraform. Update `infra/variables.tf` with details of your project and run:
-
-```shell
-terraform apply
-```
-
 ### Prefect deployment
 
 This block explains the project pipeline and how to run and deploy them
@@ -88,7 +80,19 @@ export variable with a path to the sa key
 export PREFECT_SA="<PREFECT_SA>"
 ```
 
-Deploy prefect blocks and flows
+### Terraform
+
+This project infrastructure is managed by terraform. Update `infra/variables.tf` with details of your project and run:
+
+```shell
+cd infra
+terraform apply
+```
+
+Terraform also manages google api, there might be an issue running that altogether so if there are errors on terraform
+side, enable api manually in gcp project or by running gcloud cli commands.
+
+### Deploy prefect blocks and flows
 
 ```shell
 bash workflows/prefect_deployment.sh

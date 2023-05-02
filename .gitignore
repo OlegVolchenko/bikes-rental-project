@@ -14,3 +14,5 @@ service_account.json
 /dbt/profiles.yml
 /profiles.yml
 /.user.yml
+/target/
+/dbt_packages/
