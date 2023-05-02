@@ -7,7 +7,6 @@ from prefect_dbt.cli import DbtCliProfile, DbtCoreOperation
 @flow
 def trigger_dbt_flow():
     dbt_path = f"{os.getcwd()}/dbt"
-
     dbt_cli_profile = DbtCliProfile.load("dev-profile")
     with DbtCoreOperation(
             commands=["dbt build"],
