@@ -94,23 +94,4 @@ Deploy prefect blocks and flows
 bash workflows/prefect_deployment.sh
 ```
 
-Deploy Prefect agent
-
-ssh to `prefect-agent` vm and run following commands
-
-```shell
-git clone https://github.com/OlegVolchenko/bikes-rental-project.git
-cd bikes-rental-project
-sudo chmod +x install.sh
-./install.sh
-```
-
 Now all the deployed workflows can be triggered from prefect cloud ui
-
-### DBT
-
-DBT cloud account must be created in order to run the project. Follow
-instructions [here](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/week_4_analytics_engineering/dbt_cloud_setup.md)
-create a project and connect a sa and github repo (make a fork if you are planning to commit any changes)
-
-run `dbt run` and check results dataset

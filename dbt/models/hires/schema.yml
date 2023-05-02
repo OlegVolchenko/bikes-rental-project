@@ -4,7 +4,7 @@ version: 2
 sources:
     - name: staging
       #For bigquery:
-      database: de-hires-project
+      database: "{{ env_var('PROJECT') }}"
       schema: br_staged
 
       # loaded_at_field: record_loaded_at
