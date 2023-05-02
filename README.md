@@ -61,7 +61,7 @@ source tables:
 
 intermediate data:
 
-* `bh_facts` - hires data with joined boroughs dimension
+* `bh_facts` - hires data with joined boroughs dimension, table is partition by hire date and clustered by borough
 * `stg_dim_geo` - boroughs geospatial data with population data
 
 mart:
